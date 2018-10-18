@@ -11,19 +11,27 @@ class Solutions {
 
         fun biggerIsGreater1(w: String): String {
             var change: Boolean = false
-            var index: Int = 0
-
             var stringR = w
 
             var ja = stringR.length - 2
             while (ja >= 0) {
-                var ix = ja + 1
-                while (ix < stringR.length) {
-                    if (stringR.get(ja).compareTo(stringR.get(ix)) < 0) {
+                var ix = 0
+                var charss = stringR.substring(ja + 1).toCharArray()
+                Arrays.sort(charss)
+                var stringS = String(charss)
+                while (ix < stringS.length) {
+                    if (stringR[ja].compareTo(stringS[ix]) < 0) {
                         change = true
-                        stringR = stringR.substring(0, ja) + stringR.get(ix) + stringR.substring(ja)
-                        stringR = stringR.replaceRange(ix + 1, ix + 2, "")
-                        index = ja
+                        var temp = stringS[ix]
+                        stringS = stringS.replaceRange(ix, ix + 1, "")
+                        stringS += stringR[ja]
+
+                        charss = stringS.toCharArray()
+                        Arrays.sort(charss)
+                        var stringS = String(charss)
+
+                        stringR = stringR.replaceRange(ja, ja + 1, "")
+                        stringR = stringR.substring(0, ja) + temp + stringS
                         break
                     }
                     ix++
@@ -33,11 +41,11 @@ class Solutions {
             }
 
             if (!change) return "no answer"
-            var stringSorted = stringR.substring(index + 1).toSortedSet()
+            /*var stringSorted = stringR.substring(index + 1).toSortedSet()
             stringR = stringR.substring(0, index + 1)
             stringSorted.forEach {
                 stringR += it.toString()
-            }
+            }*/
 
             return stringR
         }
