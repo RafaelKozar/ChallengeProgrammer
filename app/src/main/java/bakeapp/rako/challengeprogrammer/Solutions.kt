@@ -1,5 +1,10 @@
 package bakeapp.rako.challengeprogrammer
 
+import android.content.res.Resources
+import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 
 /**
@@ -114,6 +119,47 @@ class Solutions {
             }
 
             return stringR
+        }
+
+        fun getContainer() {
+
+            var text = ""
+            val inputStream: InputStream =  Resources.getSystem().openRawResource(R.raw.container)
+            var reader: BufferedReader = BufferedReader(InputStreamReader(inputStream))
+
+            var q = reader.readLine().toInt()
+
+            for (qItr in 1..q) {
+                var n = reader.readLine().toInt()
+                val container = Array<Array<Int>>(n, { Array<Int>(n, { 0 }) })
+                for (nRead in 0 until n) {
+                    container[nRead] = reader.readLine().split(" ").map { it.trim().toInt() }.toTypedArray()
+                }
+                text += organizingContainers(container) + "\n"
+            }
+            //result1.text = text
+        }
+
+        fun organizingContainers(container: Array<Array<Int>>): String {
+            var tam = container.size
+            var a = IntArray(tam) //number of balls of container
+            var b = IntArray(tam) //number of balls of type
+
+            for (i in 0 until tam) {
+                for (j in 0 until tam) {
+                    a[i] += container[i][j]
+                    b[j] += container[i][j]
+                }
+            }
+            a.sort()
+            b.sort()
+
+
+            return if (Arrays.equals(a, b))
+                "Possible"
+            else
+                "Impossible"
+
         }
     }
 
